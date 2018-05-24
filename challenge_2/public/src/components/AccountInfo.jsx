@@ -18,42 +18,35 @@ class AccountInfo extends React.Component {
   handleSubmit(event) {
     alert('next')
     event.preventDefault();
+    this.props.nextStep();
   }
+
 
   render() {
     return (
-      <div className='accountInfo'>
-
-        <form onSubmit={this.handleSubmit}>
+      <div>
+        <form id='accountInfo' onSubmit={this.handleSubmit}>
           <label>
-            line 1:
-           <input type="text" id="line1" placeholder="line1"></input>
+            Name:
+           <input type="text" id="name" placeholder="Your name.."></input>
           </label>
           <br></br>
           <label>
-            line 2:
-            <input type="text" id="line2"  placeholder="line2"></input>
+            Email:
+            <input type="text" id="email" placeholder="Your email."></input>
           </label>
           <br></br>
           <label>
-            city:
-            <input type="text" id="city"  placeholder="city"></input>
+            Password:
+            <input type="text" id="password" placeholder="Your password.."></input>
           </label>
-          <br></br>
-          <label>
-            state:
-            <input type="text" id="state" placeholder="state"></input>
-          </label>
-          <br></br>
-          <label>
-            zip code:
-            <input type="text" id="zipcode" placeholder="zipcode"></input>
-          </label>
-          <input type="submit" value="Next" />
+          <button type="button" onClick={this.props.previousStep}>Back</button>
+          <input type="submit" form='accountInfo' value="Next"  />
         </form>
       </div>
     );
   }
 }
+
 
 export default AccountInfo;

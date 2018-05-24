@@ -22,29 +22,38 @@ class Address extends React.Component {
 
   render() {
     return (
-      <div className='address'>
-
-        <form onSubmit={this.handleSubmit}>
+      <div>
+        <form id='address' onSubmit={this.handleSubmit}>
           <label>
-            Name:
-           <input type="text" id="name" placeholder="Your name.."></input>
+            line 1:
+           <input type="text" id="line1" placeholder="line1"></input>
           </label>
           <br></br>
           <label>
-            Email:
-            <input type="text" id="email" placeholder="Your email."></input>
+            line 2:
+            <input type="text" id="line2" placeholder="line2"></input>
           </label>
           <br></br>
           <label>
-            Password:
-            <input type="text" id="password" placeholder="Your password.."></input>
+            city:
+            <input type="text" id="city" placeholder="city"></input>
           </label>
-          <input type="submit" value="Next" />
+          <br></br>
+          <label>
+            state:
+            <input type="text" id="state" placeholder="state"></input>
+          </label>
+          <br></br>
+          <label>
+            zip code:
+            <input type="text" id="zipcode" placeholder="zipcode"></input>
+          </label>
+          <button type="button" onClick={this.props.previousStep}>Back</button>
+          <input type="submit" form='address' value="Next" onClick={this.props.nextStep} />
         </form>
       </div>
     );
   }
 }
-
 
 export default Address;
