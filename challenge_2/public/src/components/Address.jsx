@@ -16,8 +16,8 @@ class Address extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('next')
     event.preventDefault();
+    this.props.nextStep();
   }
 
   render() {
@@ -48,8 +48,10 @@ class Address extends React.Component {
             zip code:
             <input type="text" id="zipcode" placeholder="zipcode"></input>
           </label>
+          <br></br>
+          <input type="submit" form='address' value="Next" />
+          <br></br>
           <button type="button" onClick={this.props.previousStep}>Back</button>
-          <input type="submit" form='address' value="Next" onClick={this.props.nextStep} />
         </form>
       </div>
     );

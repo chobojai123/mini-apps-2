@@ -16,7 +16,6 @@ class AccountInfo extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('next')
     event.preventDefault();
     this.props.nextStep();
   }
@@ -40,8 +39,10 @@ class AccountInfo extends React.Component {
             Password:
             <input type="text" id="password" placeholder="Your password.."></input>
           </label>
+          <br></br>
+          <input type="submit" form='accountInfo' value="Next" />
+          <br></br>
           <button type="button" onClick={this.props.previousStep}>Back</button>
-          <input type="submit" form='accountInfo' value="Next"  />
         </form>
       </div>
     );

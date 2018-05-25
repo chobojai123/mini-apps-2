@@ -2,6 +2,8 @@ import React from 'react';
 import Address from './Address.jsx';
 import Home from './Home.jsx';
 import AccountInfo from './AccountInfo.jsx';
+import CreditCardInfo from './CreditCardInfo.jsx';
+import Confirmation from './Confirmation.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -11,13 +13,7 @@ class App extends React.Component {
     };
     this.nextStep = this.nextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
-    this.saveValues = this.saveValues.bind(this);
-  }
-
-  saveValues(field_value){
-    return function () {
-      fieldValues = assign({}, fieldValues, field_value)
-    }()
+    this.returnHome = this.returnHome.bind(this);
   }
 
   nextStep() {
@@ -32,6 +28,11 @@ class App extends React.Component {
     })
   }
 
+  returnHome() {
+    this.setState({
+      step: 1
+    })
+  }
 
   showStep(){
     switch (this.state.step) {
@@ -39,24 +40,30 @@ class App extends React.Component {
         return <Home 
           nextStep={this.nextStep}
           previousStep={this.previousStep}
-          saveValues={this.saveValues} />
+          />
       case 2:
         return <AccountInfo
           nextStep={this.nextStep}
           previousStep={this.previousStep}
-          saveValues={this.saveValues} />
+          />
       case 3:
         return <Address
+          nextStep={this.nextStep}
           previousStep={this.previousStep}
-          submitRegistration={this.submitRegistration} />
+          />
+      case 4:
+        return <CreditCardInfo
+          nextStep={this.nextStep}
+          previousStep={this.previousStep}
+          />
+      case 5:
+        return <Confirmation
+          returnHome={this.returnHome}
+        />
     }
   }
 
   render() {
-    var style = {
-      width: (this.state.step / 4 * 100) + '%'
-    }
-
     return (
       <main>
         <span className="progress-step">Step {this.state.step}</span>
@@ -87,6 +94,11 @@ export default App;
 
 
 
+// saveValues(field_value){
+//   return function () {
+//     fieldValues = assign({}, fieldValues, field_value)
+//   }()
+// }
 
 
 
