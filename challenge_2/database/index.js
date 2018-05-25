@@ -1,14 +1,34 @@
 const mongoose = require('mongoose');
 const mongoUri = 'mongodb://localhost/challenge2';
-// const mongoUri = 'mongodb://172.17.0.2/davidcheng1290';
 const db = mongoose.connect(mongoUri);
 mongoose.Promise = global.Promise;
 
-const commentSection = new mongoose.Schema({
-  id: Number,
-  recipeName: String,
+const paymentInfo = new mongoose.Schema({
+  name: String,
+  email: String,
+  password: String,
+  line1: String,
+  line2: String,
+  city: String,
+  state: String,
+  zipcode: Number, 
+  ccNum: Number,
+  expireDate: String,
+  cvv: Number,
+  billingZip: Number
 });
 
-const Comments = mongoose.model('info', commentSection);
+const Payment = mongoose.model('info', paymentInfo);
 
-module.exports.Comments = Comments;
+const save = (payment, callback) => {
+  Payment.create(payment, (err, response) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(response);
+    }
+  });
+};
+
+module.exports.Payment = Payment;
+module.exports.save = save;

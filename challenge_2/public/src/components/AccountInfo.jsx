@@ -1,43 +1,40 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 class AccountInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: ''
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  nextStep(e) {
+  e.preventDefault()
+  var data = {
+    name: this.refs.name.value,
+    email: this.refs.email.value,
+    password: this.refs.password.value,
   }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.nextStep();
-  }
-
+  this.props.saveValues(data)
+  this.props.nextStep()
+}
 
   render() {
     return (
       <div>
-        <form id='accountInfo' onSubmit={this.handleSubmit}>
+        <form id='accountInfo' onSubmit={this.nextStep}>
           <label>
             Name:
-           <input type="text" id="name" placeholder="Your name.."></input>
+           <input type="text" ref="name" defaultValue={this.props.defaultValue.name}></input>
           </label>
           <br></br>
           <label>
             Email:
-            <input type="text" id="email" placeholder="Your email."></input>
+            <input type="text" ref="email" defaultValue={this.props.defaultValue.email}></input>
           </label>
           <br></br>
           <label>
             Password:
-            <input type="text" id="password" placeholder="Your password.."></input>
+            <input type="text" ref="password" defaultValue={this.props.defaultValue.password}></input>
           </label>
           <br></br>
           <input type="submit" form='accountInfo' value="Next" />

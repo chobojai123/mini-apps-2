@@ -4,21 +4,60 @@ import Home from './Home.jsx';
 import AccountInfo from './AccountInfo.jsx';
 import CreditCardInfo from './CreditCardInfo.jsx';
 import Confirmation from './Confirmation.jsx'
+import axios from 'axios';
+
+const values = {
+  name: null,
+  email: null,
+  password: null,
+  line1: null,
+  line2: null,
+  city: null,
+  state: null,
+  zipcode: null,
+  ccNum: null,
+  expireDate: null,
+  cvv: null,
+  billingZip: null
+}
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      step: 1
+      step: 1,
+      defaultValue: ''
     };
     this.nextStep = this.nextStep.bind(this);
     this.previousStep = this.previousStep.bind(this);
     this.returnHome = this.returnHome.bind(this);
+    this.saveValues = this.saveValues.bind(this);
+  }
+
+  componentDidMount() {
+    // const values = {
+    //   name: null,
+    //   email: null,
+    //   password: null,
+    //   line1: null,
+    //   line2: null,
+    //   city: null,
+    //   state: null,
+    //   zipcode: null,
+    //   ccNum: null,
+    //   expireDate: null,
+    //   cvv: null,
+    //   billingZip: null
+    // }
+    this.setState({
+      defaultValue: values
+    })
   }
 
   nextStep() {
     this.setState({
       step: this.state.step + 1
+      
     })
   }
 
@@ -34,27 +73,46 @@ class App extends React.Component {
     })
   }
 
+  saveValues(field_value) {
+    const defaultValue = Object.assign({}, this.state.defaultValue, field_value);
+    this.setState({ defaultValue })
+  }
+
+
+  postInfo(payment) {
+    axios.post('/payment', payment)
+      .then()
+      .catch( err => console.log(err));
+  }
+
   showStep(){
     switch (this.state.step) {
       case 1:
         return <Home 
           nextStep={this.nextStep}
           previousStep={this.previousStep}
+          saveValues={this.saveValues}
           />
       case 2:
         return <AccountInfo
           nextStep={this.nextStep}
           previousStep={this.previousStep}
+          defaultValue={this.state.defaultValue}
+          saveValues={this.saveValues}
           />
       case 3:
         return <Address
           nextStep={this.nextStep}
           previousStep={this.previousStep}
+          defaultValue={this.state.defaultValue}
+          saveValues={this.saveValues}
           />
       case 4:
         return <CreditCardInfo
           nextStep={this.nextStep}
           previousStep={this.previousStep}
+          defaultValue={this.state.defaultValue}
+          saveValues={this.saveValues}
           />
       case 5:
         return <Confirmation
@@ -64,9 +122,10 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.defaultValue);
     return (
       <main>
-        <span className="progress-step">Step {this.state.step}</span>
+        <span className="step">Step {this.state.step}</span>
         {this.showStep()}
       </main>
     )

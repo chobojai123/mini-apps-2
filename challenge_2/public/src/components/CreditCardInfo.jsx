@@ -3,45 +3,43 @@ import React from 'react';
 class CreditCardInfo extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: ''
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.nextStep = this.nextStep.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-    this.props.nextStep();
+  nextStep(e) {
+    e.preventDefault()
+    var data = {
+      ccNum: this.refs.ccNum.value,
+      expireDate: this.refs.expireDate.value,
+      cvv: this.refs.cvv.value,
+      billingZip: this.refs.billingZip.value,
+    }
+    this.props.saveValues(data)
+    this.props.nextStep()
   }
 
   render() {
     return (
       <div>
-        <form id='creditCardInfo' onSubmit={this.handleSubmit}>
+        <form id='creditCardInfo' onSubmit={this.nextStep}>
           <label>
             credit card #:
-           <input type="text" id="line1" placeholder="line1"></input>
+           <input type="text" ref='ccNum' ></input>
           </label>
           <br></br>
           <label>
             expirary date:
-            <input type="text" id="line2" placeholder="line2"></input>
+            <input type="text" ref='expireDate' ></input>
           </label>
           <br></br>
           <label>
             CVV:
-            <input type="text" id="city" placeholder="city"></input>
+            <input type="text" ref='cvv' ></input>
           </label>
           <br></br>
           <label>
             billing zip code:
-            <input type="text" id="state" placeholder="state"></input>
+            <input type="text" ref='billingZip' ></input>
           </label>
           <br></br>
           <input type="submit" form='creditCardInfo' value="Next" />
