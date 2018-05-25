@@ -20,15 +20,22 @@ const paymentInfo = new mongoose.Schema({
 
 const Payment = mongoose.model('info', paymentInfo);
 
-const save = (payment, callback) => {
-  Payment.create(payment, (err, response) => {
-    if (err) {
-      callback(err);
-    } else {
-      callback(response);
-    }
-  });
-};
+const save = (payment) => {
+  return new Promise((resolve, reject) => {
+    Payment.create(payment, (err, response) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(response);
+      }
+    });
+  })
+}
 
-module.exports.Payment = Payment;
-module.exports.save = save;
+
+// module.exports.Payment = Payment;
+// module.exports.save = save;
+module.exports = {
+  Payment,
+  save
+};

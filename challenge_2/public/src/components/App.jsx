@@ -5,6 +5,7 @@ import AccountInfo from './AccountInfo.jsx';
 import CreditCardInfo from './CreditCardInfo.jsx';
 import Confirmation from './Confirmation.jsx'
 import axios from 'axios';
+import styles from './css/pay.scss'
 
 const values = {
   name: null,
@@ -32,23 +33,10 @@ class App extends React.Component {
     this.previousStep = this.previousStep.bind(this);
     this.returnHome = this.returnHome.bind(this);
     this.saveValues = this.saveValues.bind(this);
+    this.postInfo = this.postInfo.bind(this);
   }
 
   componentDidMount() {
-    // const values = {
-    //   name: null,
-    //   email: null,
-    //   password: null,
-    //   line1: null,
-    //   line2: null,
-    //   city: null,
-    //   state: null,
-    //   zipcode: null,
-    //   ccNum: null,
-    //   expireDate: null,
-    //   cvv: null,
-    //   billingZip: null
-    // }
     this.setState({
       defaultValue: values
     })
@@ -57,7 +45,6 @@ class App extends React.Component {
   nextStep() {
     this.setState({
       step: this.state.step + 1
-      
     })
   }
 
@@ -73,16 +60,21 @@ class App extends React.Component {
     })
   }
 
-  saveValues(field_value) {
-    const defaultValue = Object.assign({}, this.state.defaultValue, field_value);
-    this.setState({ defaultValue })
+  postInfo() {
+    const data = this.state.defaultValue;
+    console.log('posted');
+    console.log(data);
+    axios.post('/payment', data)
+      .then((response) => { console.log('posted') })
+      .catch(err => console.log(err));
   }
 
 
-  postInfo(payment) {
-    axios.post('/payment', payment)
-      .then()
-      .catch( err => console.log(err));
+  saveValues(field_value) {
+    const defaultValue = Object.assign({}, this.state.defaultValue, field_value);
+    this.setState({ 
+      defaultValue 
+    })
   }
 
   showStep(){
@@ -116,16 +108,21 @@ class App extends React.Component {
           />
       case 5:
         return <Confirmation
+          defaultValue={this.state.defaultValue}
           returnHome={this.returnHome}
+          postInfo={this.postInfo}
         />
     }
   }
 
   render() {
-    console.log(this.state.defaultValue);
+    var style = {
+      width: (this.state.step / 4 * 100) + '%'
+    }
     return (
       <main>
-        <span className="step">Step {this.state.step}</span>
+        <span className="progress-step">Step {this.state.step}</span>
+        <progress className="progress" style={style}></progress>
         {this.showStep()}
       </main>
     )

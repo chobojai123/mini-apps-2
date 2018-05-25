@@ -9,7 +9,7 @@ class Confirmation extends Component {
   render() {
     return (
       <div>
-        <button type="button" onClick={this.props.returnHome} >Purchase</button>
+        <button type="button" onClick={this.props.postInfo} >Purchase</button>
       </div>
     );
   }

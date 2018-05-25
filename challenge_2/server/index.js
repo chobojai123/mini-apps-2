@@ -4,10 +4,12 @@ const cors = require('cors');
 const db = require('../database/index.js');
 const app = express();
 
+app.use(bodyparser.json()); 
 
-app.post('/payment', function (req, res) {
+app.post('/payment', (req, res) => {
+
+  console.log(req.body);
   db.save(req.body)
-    .then(console.log('hi'))
     .then(() => { res.status(201).send('Successfully saved') })
     .catch( (err) => { res.status(400).send(err) });
 })
