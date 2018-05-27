@@ -1,0 +1,17 @@
+tr {
+  font-size: 13px;
+}
+
+table, th{
+    border: 1px solid black;
+}
+
+.event {
+  margin: 20px auto;
+  max-width: 800px;
+  width: 100%;
+}
+
+th {
+    height: 50px;
+}
