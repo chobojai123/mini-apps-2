@@ -23,8 +23,7 @@ class SearchForm extends Component {
   
   render() {
     return (
-      <div>
-        <h1>Historical Events Finder</h1>
+      <div className='search'>
         <h4>Search for historical event</h4>
         Enter keyword: <input value={this.state.keyword} onChange={this.handleChange}/>
         <button onClick={this.search}>Search</button>

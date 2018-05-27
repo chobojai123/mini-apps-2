@@ -2,16 +2,80 @@ tr {
   font-size: 13px;
 }
 
-table, th{
-    border: 1px solid black;
+td {
+  overflow: hidden;
+}
+
+th {
+  background-color: lightslategray;
+  font-weight: 700;
+  font-size: 15px;
+  color: black;
+}
+
+table, th, tr, td, thead, .table>thead>tr>th {
+  border: 1px solid black;
+}
+
+.table > tbody > tr > td:first-child, .table th  {
+  text-align: center;
+}
+
+th:nth-last-child(1),
+td:nth-last-child(1) {
+    text-align: center;
 }
 
 .event {
   margin: 20px auto;
-  max-width: 800px;
+  max-width: 850px;
   width: 100%;
 }
 
-th {
-    height: 50px;
+.paginate {
+  text-align: center;
+}
+
+
+
+.header {
+  text-align: center;
+  background-color: teal;
+  color: white;
+  margin: 0px;
+  width: 100%;
+  top: 0px;
+  position: fixed;
+}
+
+.event {
+  margin-top: 50px;
+}
+
+/* data.jsx */
+
+.table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row-date {
+  width: 10%;
+}
+.row-description {
+  width: 75%;
+}
+.row-category {
+  width: 15%;
+}
+
+/* searchform.jsx  */
+.search {
+  text-align: center;
+  align-content: center;
 }

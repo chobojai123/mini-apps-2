@@ -50,7 +50,6 @@ class App extends Component {
       pageNumber
     } = this.state
     let selected = data.selected;
-    console.log(selected);
     this.setState({ 
       pageNumber: selected + 1}, () => {
         this.getEvents();
@@ -59,21 +58,26 @@ class App extends Component {
   
   render() {
     return (
-      <div className='event'>
-        <SearchForm getKeyword={this.getKeyword} getEvents={this.getEvents}/>
-        <br></br>
-        <Data events={this.state.events}/>
-        <ReactPaginate previousLabel={"previous"}
-          nextLabel={"next"}
-          breakLabel={<a href="">...</a>}
-          breakClassName={"break-me"}
-          pageCount={this.state.pageCount}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
-          onPageChange={this.handlePageClick}
-          containerClassName={"pagination"}
-          subContainerClassName={"pages pagination"}
-          activeClassName={"active"}/>
+      <div>
+        <h1 className='header'>Historical Events Finder</h1>
+        <div className='event'>
+          <SearchForm getKeyword={this.getKeyword} getEvents={this.getEvents}/>
+          <br></br>
+          <Data events={this.state.events}/>
+          <div className='paginate'>
+            <ReactPaginate previousLabel={"previous"}
+              nextLabel={"next"}
+              breakLabel={<a href="">...</a>}
+              breakClassName={"break-me"}
+              pageCount={this.state.pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={this.handlePageClick}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}/>
+            </div>
+        </div>
       </div>
     )
   }

@@ -5,12 +5,9 @@ const Data = (props) => (
     <table className='table'>
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Description</th>
-          {/* <th>Lang</th>
-          <th>Category 1</th> */}
-          <th>Category 2</th>
-          {/* <th>granularity</th> */}
+          <th className='row-1 row-date'>Date</th>
+          <th className='row-1 row-description'>Description</th>
+          <th className='row-1 row-category'>Category</th>
         </tr>
       </thead>
       
