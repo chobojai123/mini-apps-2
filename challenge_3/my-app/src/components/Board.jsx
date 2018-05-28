@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from "react";
+import Cell from './Cell.jsx'
 
 class Board extends Component {
   state = {
-    boardData: this.initBoardData(this.props.height, this.props.width, this.props,mines),
+    boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
     gameStatus: false,
     mineCount: this.props.mines
   }
@@ -54,39 +54,86 @@ class Board extends Component {
     for (var i = 0; i < height; i++) {
       for(var j = 0; j < width; j++) {
         if (cells[i][j].isMine !== true) {
-
+          let mine = 0;
+          // let area = this.traverseBoard(cells[i][j].x, cells[i][j].y, cells)
+          // eslint-disable-next-line
+          // area.map( value => {
+          //   if (value.isMine) {
+          //     mine ++;
+          //   }
+          // });
+          if (mine === 0) {
+            updatedCells[i][j].isEmpty = true;
+          }
+          updatedCells[i][j].neighbor = mine;
         }
       }
     }
+    return updatedCells;
   }
 
   traverseBoard(x, y, cells) {
     let board = [];
+    // top
     if (x > 0) {
-      board.push(cells[x-1][y])
+      board.push(cells[x-1][y]);
     }
-    if (x < this.props.height) {
-      board.push(cells[x+1[y]])
+    // bottom
+    if (x < this.props.height - 1) {
+      board.push(cells[x+1][y]);
     }
+    // left
+    if (y > 0) {
+      board.push(cells[x][y-1]);
+    }
+    // right
+    if (y < this.props.width - 1) {
+      board.push(cells[x][y+1]);
+    }
+    // top left
+    if (x > 0 && y > 0) {
+      board.push(cells[x-1][y-1])
+    }
+    // top right
+    if (x > 0 && y < this.props.width - 1) {
+      board.push(cells[x-1][y-1]);
+    }
+    // bottom left
+    if (x < this.props.height - 1 && y > 0) {
+      board.push(cells[x+1][y-1])
+    }
+    // bottom right
+    if (x < this.props.height - 1 && y < this.props.width - 1) {
+      board.push(cells[x+1][y+1])
+    }
+    return board;
   }
 
 
   initBoardData(height, width, mines) {
-
+    let data = this.createEmptyArray(height, width);
+    data = this.plantMines(data, height, width, mines);
+    data = this.getNeighbor(data, height, width);
+    return data;
   }
 
+  renderBoard(data) { 
+    return data.map( (row) => {
+      return row.map( (item) => {
+        return (
+          <div key={item.x + row.length + item.y}> 
+            <Cell value={item}/>
 
-
-
-
-
+          </div>
+        );
+      })
+    })
+  }
 
   render() {
-
     return (
       <div className='game'>
-
-        <h1>test</h1>
+      {this.renderBoard(this.state.boardData)}
       </div>
     );
   }
