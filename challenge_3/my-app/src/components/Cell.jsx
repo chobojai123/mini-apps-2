@@ -18,7 +18,7 @@ class Cell extends Component {
   render() {
     // const { value, onClick, cMenu } = this.props;
     return (
-      <div 
+      <div className='cell'
         // onClick={this.props.onClick}
         // onContextMenu={this.props.cMenu}
       >

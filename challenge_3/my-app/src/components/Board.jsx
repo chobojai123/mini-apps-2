@@ -132,8 +132,11 @@ class Board extends Component {
 
   render() {
     return (
-      <div className='game'>
-      {this.renderBoard(this.state.boardData)}
+      <div className='board'>
+        <div className='game-info'>
+          <h1 className='info'>MineSweeper</h1>
+        </div>
+        {this.renderBoard(this.state.boardData)}
       </div>
     );
   }

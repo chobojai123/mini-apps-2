@@ -15,7 +15,6 @@ class Game extends Component {
     const { height, width, mines } = this.state;
     return (
       <div className='game'>
-        <h1>Mine Sweeper</h1>
         <Board height={height} width={width} mines={mines}/>
       </div>
     );
