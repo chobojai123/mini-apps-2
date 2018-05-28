@@ -1,5 +1,16 @@
+html {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow: auto;
+}
+
 tr {
   font-size: 13px;
+  background-color: lightgray;
 }
 
 td {
@@ -28,7 +39,7 @@ td:nth-last-child(1) {
 
 .event {
   margin: 20px auto;
-  max-width: 850px;
+  max-width: 900px;
   width: 100%;
 }
 

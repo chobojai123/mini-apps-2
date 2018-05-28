@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
+import low from 'lowdb';
 import Data from './Data.jsx';
 import SearchForm from './SearchForm.jsx';
 
