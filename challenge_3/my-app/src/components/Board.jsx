@@ -4,11 +4,12 @@ import Cell from './Cell.jsx'
 class Board extends Component {
   state = {
     boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
-    gameStatus: false,
+    gameStatus: 'Game has started',
     mineCount: this.props.mines
   }
 
   getRandomNumber(number) {
+    // to get random spot and remainder
     return Math.floor((Math.random() * 1000) + 1) % number;
   }
 
@@ -19,6 +20,7 @@ class Board extends Component {
       // push 10 empty rows into array
       cells.push([]);
       for (var j = 0; j < width; j++) {
+        // give properties to each cell 
         cells[i][j] = {
           x: i,
           y: j,
@@ -26,7 +28,6 @@ class Board extends Component {
           neighbor: 0,
           isRevealed: false,
           isEmpty: false,
-          isFlagged: false
         }
       }
     }
@@ -52,16 +53,15 @@ class Board extends Component {
   getNeighbor(cells, height, width) {
     let updatedCells = cells;
     for (var i = 0; i < height; i++) {
-      for(var j = 0; j < width; j++) {
+      for (var j = 0; j < width; j++) {
         if (cells[i][j].isMine !== true) {
           let mine = 0;
-          // let area = this.traverseBoard(cells[i][j].x, cells[i][j].y, cells)
-          // eslint-disable-next-line
-          // area.map( value => {
-          //   if (value.isMine) {
-          //     mine ++;
-          //   }
-          // });
+          let area = this.traverseBoard(cells[i][j].x, cells[i][j].y, cells)
+          area.map( cell => {
+            if (cell.isMine) {
+              mine ++;
+            }
+          });
           if (mine === 0) {
             updatedCells[i][j].isEmpty = true;
           }
@@ -96,7 +96,7 @@ class Board extends Component {
     }
     // top right
     if (x > 0 && y < this.props.width - 1) {
-      board.push(cells[x-1][y-1]);
+      board.push(cells[x-1][y+1]);
     }
     // bottom left
     if (x < this.props.height - 1 && y > 0) {
@@ -109,21 +109,54 @@ class Board extends Component {
     return board;
   }
 
-
   initBoardData(height, width, mines) {
-    let data = this.createEmptyArray(height, width);
-    data = this.plantMines(data, height, width, mines);
-    data = this.getNeighbor(data, height, width);
-    return data;
+    let cells = this.createEmptyArray(height, width);
+    cells = this.plantMines(cells, height, width, mines);
+    cells = this.getNeighbor(cells, height, width);
+    return cells;
   }
 
-  renderBoard(data) { 
-    return data.map( (row) => {
+  // reveal board by updating each cell's reveal prob to true
+  revealBoard() {
+    let board = this.state.boardData;
+    board.map( (row) => {
+      row.map( (item) => {
+        item.isRevealed = true;
+      });
+    })
+    this.setState({
+      boardData: board
+    })
+  }
+
+  emptyBoard() {
+
+  }
+
+
+  handleClick(x, y) {
+    const { boardData } = this.state;
+    if (boardData[x][y].isRevealed) {
+      return null;
+    }
+    if (boardData[x][y].isMine) {
+      this.setState({ 
+        gameStatus: 'Game Over'
+       })
+      this.revealBoard();
+      alert('Game Over');
+    }
+
+    let data = this.state.boardData;
+    
+  }
+
+  renderBoard(cells) { 
+    return cells.map( (row) => {
       return row.map( (item) => {
         return (
-          <div key={item.x + row.length + item.y}> 
+          <div key={item.x * row.length * item.y}> 
             <Cell value={item}/>
-
           </div>
         );
       })
@@ -135,6 +168,9 @@ class Board extends Component {
       <div className='board'>
         <div className='game-info'>
           <h1 className='info'>MineSweeper</h1>
+          <h2>
+            {this.state.gameStatus}
+          </h2>
         </div>
         {this.renderBoard(this.state.boardData)}
       </div>
