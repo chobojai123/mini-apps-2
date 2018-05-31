@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 
 class Cell extends Component {
   getValue() {
-    const { value } = this.props
-    if (!value.isRevealed) {
-      return this.props.value.isFlagged ? "flag" : null;
-    }
-    if (value.isMine) {
-      return "mine";
-    }
-    if (value.neighbor === 0) {
+    const { cell } = this.props
+    if (!cell.isRevealed) {
       return null;
     }
-    return value.neighbor;
+    if (cell.isMine) {
+      return "💣";
+    }
+    if (cell.neighbor === 0) {
+      return null;
+    }
+    return cell.neighbor;
   }
 
   render() {
-    // const { value, onClick, cMenu } = this.props;
+    const { cell, onClick} = this.props;
+    let className =
+      "cell" +
+      (cell.isRevealed ? "" : " hidden") 
     return (
-      <div className='cell'
-        // onClick={this.props.onClick}
-        // onContextMenu={this.props.cMenu}
+      <div 
+        className={className}
+        onClick={onClick}
       >
       {this.getValue()}  
       </div>

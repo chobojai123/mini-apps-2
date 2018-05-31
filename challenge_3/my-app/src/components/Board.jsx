@@ -3,13 +3,12 @@ import Cell from './Cell.jsx'
 
 class Board extends Component {
   state = {
-    boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
-    gameStatus: 'Game has started',
-    mineCount: this.props.mines
-  }
+      boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
+      gameStatus: 'Game has started!',
+    }
 
+  // to get random spot and remainder
   getRandomNumber(number) {
-    // to get random spot and remainder
     return Math.floor((Math.random() * 1000) + 1) % number;
   }
 
@@ -56,8 +55,8 @@ class Board extends Component {
       for (var j = 0; j < width; j++) {
         if (cells[i][j].isMine !== true) {
           let mine = 0;
-          let area = this.traverseBoard(cells[i][j].x, cells[i][j].y, cells)
-          area.map( cell => {
+          let board = this.traverseBoard(cells[i][j].x, cells[i][j].y, cells)
+          board.map( cell => {
             if (cell.isMine) {
               mine ++;
             }
@@ -74,41 +73,35 @@ class Board extends Component {
 
   traverseBoard(x, y, cells) {
     let board = [];
-    // top
-    if (x > 0) {
+    if (x > 0) {  // top
       board.push(cells[x-1][y]);
     }
-    // bottom
-    if (x < this.props.height - 1) {
+    if (x < this.props.height - 1) {  // bottom
       board.push(cells[x+1][y]);
     }
-    // left
-    if (y > 0) {
+    if (y > 0) { // left
       board.push(cells[x][y-1]);
     }
-    // right
-    if (y < this.props.width - 1) {
+    if (y < this.props.width - 1) {   // right
       board.push(cells[x][y+1]);
     }
-    // top left
-    if (x > 0 && y > 0) {
+    if (x > 0 && y > 0) {    // top left
       board.push(cells[x-1][y-1])
     }
-    // top right
-    if (x > 0 && y < this.props.width - 1) {
+    if (x > 0 && y < this.props.width - 1) {    // top right
       board.push(cells[x-1][y+1]);
     }
-    // bottom left
-    if (x < this.props.height - 1 && y > 0) {
+    if (x < this.props.height - 1 && y > 0) {   // bottom left
       board.push(cells[x+1][y-1])
     }
-    // bottom right
-    if (x < this.props.height - 1 && y < this.props.width - 1) {
+    if (x < this.props.height - 1 && y < this.props.width - 1) {    // bottom right
       board.push(cells[x+1][y+1])
     }
     return board;
   }
 
+
+  // start up board function, first create array, second plant mines, third determine values for cells
   initBoardData(height, width, mines) {
     let cells = this.createEmptyArray(height, width);
     cells = this.plantMines(cells, height, width, mines);
@@ -129,34 +122,71 @@ class Board extends Component {
     })
   }
 
-  emptyBoard() {
+  // empty cells should be revealed as well when clicked
+  revealEmptyCell(x, y, cells) {
+    let board = this.traverseBoard(x, y, cells);
+    board.map( (cell) => {
+      if (!cell.isRevealed && (cell.isEmpty || !cell.isMine)) {
+        cells[cell.x][cell.y].isRevealed = true;
+        if (cell.isEmpty) {
+          this.revealEmptyCell(cell.x, cell.y, cells);
+        }
 
+      }
+    });
+    return cells;
+  }
+
+  getHiddenCell(data) {
+    let array = [];
+    data.map( (row) => {
+      row.map( (item) => {
+        if (!item.isRevealed) {
+          array.push(item);
+        }
+      })
+    })
+    return array;
   }
 
 
   handleClick(x, y) {
-    const { boardData } = this.state;
-    if (boardData[x][y].isRevealed) {
+    if (this.state.boardData[x][y].isRevealed) {
       return null;
     }
-    if (boardData[x][y].isMine) {
-      this.setState({ 
-        gameStatus: 'Game Over'
-       })
+    if (this.state.boardData[x][y].isMine) {
+      this.setState({ gameStatus: "You Lost!" });
       this.revealBoard();
-      alert('Game Over');
+      alert('Game Over!');
     }
 
-    let data = this.state.boardData;
-    
+    let updatedCell = this.state.boardData;
+    updatedCell[x][y].isRevealed = true;
+
+    if (updatedCell[x][y].isEmpty) {
+      updatedCell = this.revealEmptyCell(x, y, updatedCell);
+    }
+    console.log(this.getHiddenCell(updatedCell).length);
+
+    if (this.getHiddenCell(updatedCell).length === this.props.mines) {
+      this.setState({ gameStatus: "You Win!" });
+      this.revealBoard();
+      alert("You Win!");
+    }
+
+    this.setState({
+      boardData: updatedCell,
+    });
   }
 
   renderBoard(cells) { 
     return cells.map( (row) => {
       return row.map( (item) => {
         return (
-          <div key={item.x * row.length * item.y}> 
-            <Cell value={item}/>
+          <div key={item.x * row.length + item.y}> 
+            <Cell
+              onClick={() => this.handleClick(item.x, item.y)} 
+              cell={item}/>
           </div>
         );
       })
@@ -166,8 +196,8 @@ class Board extends Component {
   render() {
     return (
       <div className='board'>
-        <div className='game-info'>
-          <h1 className='info'>MineSweeper</h1>
+        <div className='board-info'>
+          <h1 className='info'>MineSweeper 💣</h1>
           <h2>
             {this.state.gameStatus}
           </h2>
